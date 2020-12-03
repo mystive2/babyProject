@@ -49,6 +49,31 @@ public class customer {
 		}
 	}
 	
+	public static String[][] getCustomers2(){
+		try {
+			Connection con=getConnection();
+			PreparedStatement statement=con.prepareStatement("Select name, birth, gender FROM customer");
+			ResultSet results= statement.executeQuery();
+			ArrayList<String[]> list = new ArrayList<String[]>();
+			while(results.next()) {
+				list.add(new String[] {
+						results.getString("name"),
+						results.getString("birth"),
+						results.getString("gender")
+				});
+//				list.add("Name : "+ results.getString("name") +
+//					   	" birth : "+ results.getString("birth")+ 
+//					   	" gender : "+ results.getString("gender"));   			
+			}
+			System.out.println("The data has been fetched");
+			String[][] arr2=new String[list.size()][3];
+			return list.toArray(arr2);
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
+	
 	public static void createTable() {
 		try {
 			Connection con= getConnection();

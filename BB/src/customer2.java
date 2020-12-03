@@ -26,19 +26,62 @@ public class customer2 {
 		}
 	}
 	
-	public static String[][] getCustomers(){
+	public static void createCustomer2(String nametxt, String birth, String gender, String weight) {
+		try {
+			Connection con= getConnection();
+			PreparedStatement insert=con.prepareStatement(""
+						+"INSERT INTO customer8"
+						+"(name, birth, gender, weight) "
+						+ "VALUES "
+						+ "('"+nametxt+"','"+birth+"','"+gender+"','"+weight+"')");
+			insert.execute();
+			System.out.println("The data has been saved");
+		}catch(Exception e) {
+			
+		}
+	}
+	
+	
+	
+	public static void getCustomers(){
 		try {
 			Connection con=getConnection();
-			PreparedStatement statement=con.prepareStatement("Select named, yeard, monthd, dayd, genderd FROM customer6");
+			PreparedStatement statement=con.prepareStatement("Select weight.men from weight where weight.monthd='30'");
+			ResultSet results= statement.executeQuery();
+			while(results.next()) {
+						String bbd=results.getString("men");
+						jj data= new jj(bbd);
+					System.out.println(bbd);	
+			System.out.println("The data has been fetched");
+			
+			
+			}
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			System.out.println("fff");
+		}
+	}
+	
+	
+	
+	public static String[][] getCustomers2(){
+		try {
+			Connection con=getConnection();
+			//PreparedStatement statement=con.prepareStatement("Select named, yeard, monthd, dayd, genderd FROM customer6");
+			PreparedStatement statement=con.prepareStatement("Select name, birth, gender, weight FROM customer8");
 			ResultSet results= statement.executeQuery();
 			ArrayList<String[]> list = new ArrayList<String[]>();
 			while(results.next()) {
 				list.add(new String[] {
-						results.getString("named"),
-						results.getString("yeard"),
-						results.getString("monthd"),
-						results.getString("dayd"),
-						results.getString("genderd")
+//						results.getString("named"),
+//						results.getString("yeard"),
+//						results.getString("monthd"),
+//						results.getString("dayd"),
+//						results.getString("genderd")
+						results.getString("name"),
+						results.getString("birth"),
+						results.getString("gender"),
+						results.getString("weight")
 				});
 //				list.add("Name : "+ results.getString("name") +
 //					   	" birth : "+ results.getString("birth")+ 
@@ -46,13 +89,14 @@ public class customer2 {
 			}
 			//System.out.println(list.toString());
 			System.out.println("The data has been fetched");
-			String[][] arr=new String[list.size()][5];
-			return list.toArray(arr);
+			String[][] arr2=new String[list.size()][4];
+			return list.toArray(arr2);
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			return null;
 		}
 	}
+	
 	
 	public static void createTable(String aa) {
 		try {
@@ -81,13 +125,12 @@ public class customer2 {
 			Connection con= getConnection();
 			PreparedStatement createTable=con.prepareStatement(
 					"CREATE TABLE "
-					+ "customer6( "
-					+ "named varChar(255), "
-					+ "yeard varChar(255), "
-					+ "monthd varChar(255), "
-					+ "dayd varChar(255), "
-					+ "genderd varChar(255), "
-					+ "constraint pk_customer6 PRIMARY KEY(named))");
+					+ "customer8( "
+					+ "name varChar(255), "
+					+ "birth varChar(255), "
+					+ "gender varChar(255), "
+					+ "weight varChar(255), "
+					+ "constraint pk_customer8 PRIMARY KEY(name))");
 			createTable.execute();
 			System.out.println("succes create table");
 		}catch(Exception e) {
